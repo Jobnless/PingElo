@@ -7,8 +7,6 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 import os
 
-import math
-
 #Load environment variables
 load_dotenv()
 
@@ -36,7 +34,6 @@ def root():
 #Standard expected score formula for elo
 def expected_score(rating_a: int, rating_b: int) -> float:
     return 1 / (1 + 10 ** ((rating_b - rating_a) / 400))
-
 
 def calculate_effective_k(score_a: int, score_b: int, game_points: int) -> float:
     #Base elo sensitivity per match
