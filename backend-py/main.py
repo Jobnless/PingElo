@@ -31,31 +31,31 @@ def root():
 
 #Elo calculation for every match
 
-#The data python expects from typescript
+#The data py expects from ts
 class EloRequest(BaseModel):
-    RatingPlayerA: int
-    RatingPlayerB: int
-    ScorePlayerA: int
-    ScorePlayerB: int
-    GamePoints: int
+    rating_player_a: int
+    rating_player_b: int
+    score_player_a: int
+    score_player_b: int
+    game_points: int
 
-#The data python will send typescript
+#The data py will send ts
 class EloResponse(BaseModel):
-    NewRatingPlayerA: int
-    NewRatingPlayerB: int
-    Winner = str
+    new_rating_player_b: int
+    new_rating_player_b: int
+    winner = str
 
 @app.post("/calculate_elo", response_model=EloResponse)
 def calculate_elo(request: EloRequest):
     #Get previous elo of players
-    RatingA = request.RatingPlayerA
-    RatingB = request.RatingPlayerB
+    rating_a = request.rating_player_a
+    rating_b = request.rating_player_b
 
     #Get score of each player
-    ScoreA = request.ScorePlayerA
-    ScoreB = request.ScorePlayerB
+    score_a = request.score_player_a
+    score_b = request.score_player_b
 
     #Get how many points the game was
-    GamePoints = request.GamePoints
+    game_points = request.game_points
 
-    
+    if score_a > score_b:
