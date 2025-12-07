@@ -7,6 +7,8 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 import os
 
+import math
+
 #Load environment variables
 load_dotenv()
 
@@ -30,6 +32,9 @@ def root():
     return {"message": "Backend is running!"}
 
 #Elo calculation for every match
+
+#Scales elo change: 25 <---> 50
+BASE_K = 50
 
 #The data py expects from ts
 class EloRequest(BaseModel):
@@ -59,3 +64,18 @@ def calculate_elo(request: EloRequest):
     game_points = request.game_points
 
     if score_a > score_b:
+        winner = "A"
+        actual_a = 1
+        actual_b = 0
+    else:
+        winner = "B"
+        actual_a = 0
+        actual_b = 1
+
+    #Determines who was expected to win
+    expected_a = expected_score(rating_a, rating_b)
+    expected_b = 1 - expected_a
+
+#Standard expected score formula for elo
+def expected_score(rating_a: int, rating_b: int) -> float:
+    return 1 / (1 + 10 ** ((rating_b - rating_a) / 400))
