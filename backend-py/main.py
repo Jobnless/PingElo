@@ -36,6 +36,10 @@ def root():
 #Scales elo change: 25 <---> 50
 BASE_K = 50
 
+#Standard expected score formula for elo
+def expected_score(rating_a: int, rating_b: int) -> float:
+    return 1 / (1 + 10 ** ((rating_b - rating_a) / 400))
+
 #The data py expects from ts
 class EloRequest(BaseModel):
     rating_player_a: int
@@ -46,9 +50,9 @@ class EloRequest(BaseModel):
 
 #The data py will send ts
 class EloResponse(BaseModel):
+    new_rating_player_a: int
     new_rating_player_b: int
-    new_rating_player_b: int
-    winner = str
+    winner: str
 
 @app.post("/calculate_elo", response_model=EloResponse)
 def calculate_elo(request: EloRequest):
@@ -75,7 +79,3 @@ def calculate_elo(request: EloRequest):
     #Determines who was expected to win
     expected_a = expected_score(rating_a, rating_b)
     expected_b = 1 - expected_a
-
-#Standard expected score formula for elo
-def expected_score(rating_a: int, rating_b: int) -> float:
-    return 1 / (1 + 10 ** ((rating_b - rating_a) / 400))
