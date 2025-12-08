@@ -31,17 +31,23 @@ def root():
 
 #Elo calculation for every match
 
+#Base elo sensitivity per match
+BASE_K = 50
+
+#Standard amount of points in a game
+IDEAL_POINTS = 7
+
 #Standard expected score formula for elo
 def expected_score(rating_a: int, rating_b: int) -> float:
     return 1 / (1 + 10 ** ((rating_b - rating_a) / 400))
 
 def calculate_effective_k(score_a: int, score_b: int, game_points: int) -> float:
-    #Base elo sensitivity per match
-    BASE_K = 50
+    #Elo is scaled based on game length
+    length_factor = game_points / IDEAL_POINTS
 
-    #BASE_K is scaled based on score difference
+    #Elo is scaled based on score difference
     score_diff_factor =  abs(score_a - score_b) / game_points
-    return BASE_K * score_diff_factor
+    return BASE_K * score_diff_factor * length_factor
 
 #The data py expects from ts
 class EloRequest(BaseModel):
