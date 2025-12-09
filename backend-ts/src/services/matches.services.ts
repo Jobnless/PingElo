@@ -21,7 +21,7 @@ export async function createMatch(
     ratingA: number,
     ratingB: number
 ): Promise<MatchWithElo> {
-    //Calls leo service to get new data
+    //Calls elo service to get new data
     const eloData = await calculateElo({
         playerAId,
         playerBId,
