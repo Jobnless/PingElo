@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 
 #Data validation and parsing
@@ -30,9 +31,9 @@ def root():
     return {"message": "Backend is running!"}
 
 #Health check for UptimeRobot
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 def health():
-    return {"status": "ok"}
+    return Response(status_code=200)
 
 #Elo calculation for every match
 
