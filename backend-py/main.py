@@ -18,7 +18,7 @@ allowed_origin = os.getenv("TYPESCRIPT_BACKEND_URL")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[allowed_origin],
+    allow_origins=[allowed_origin] if allowed_origin else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -96,11 +96,11 @@ def calculate_elo(request: EloRequest):
 
     #Gives elo change for both players
     rating_change_a = round(effective_k * (actual_a - expected_a))
-    rating_change_b = -change_a
+    rating_change_b = -rating_change_a
 
     #Uses change to assign new rating
-    new_rating_a = rating_a + change_a
-    new_rating_b = rating_b + change_b
+    new_rating_a = rating_a + rating_change_a
+    new_rating_b = rating_b + rating_change_b
 
     #returns winner and new elo ratings
     return EloResponse(

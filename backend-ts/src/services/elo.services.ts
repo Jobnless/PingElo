@@ -48,7 +48,11 @@ export async function calculateElo(request: EloRequest): Promise<EloResponse> {
       winner: winnerId
     };
   } catch (err: any) {
-    console.error("Failed to calculate Elo:", err.message);
+    if (err.response) {
+      console.error("Python error:", err.response.data);
+    } else {
+      console.error("Network error:", err.message);
+    }
     throw new Error("Could not calculate Elo");
   }
 }
